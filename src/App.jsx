@@ -1,45 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalView, setModalView] = useState("social");
+  const [toggleModal, setToggleModal] = useState(false);
 
-  useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape") setModalOpen(false);
-    }
-    if (modalOpen) {
-      // prevent background scroll when modal is open
-      document.body.style.overflow = "hidden";
-      // also lock the root html element in case some browsers scroll it
-      document.documentElement.style.overflow = "hidden";
-      window.addEventListener("keydown", onKey);
-    } else {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [modalOpen]);
+  function handleToggleModal() {
+    setToggleModal(!toggleModal);
+  }
 
   return (
     <>
-      {/* *** Preloader Start *** */}
+      {/* ***** Preloader Start ***** */}
       {/* <div id="js-preloader" className="js-preloader">
-    <div className="preloader-inner">
-      <span className="dot" />
-      <div className="dots">
-        <span />
-        <span />
-        <span />
-      </div>
-    </div>
-  </div> */}
-      {/* *** Preloader End *** */}
-      {/* *** Header Area Start *** */}
+        <div className="preloader-inner">
+          <span className="dot" />
+          <div className="dots">
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+      </div> */}
+      {/* ***** Preloader End ***** */}
+
+      {/* ***** Header Area Start ***** */}
       <header
         className="header-area header-sticky wow slideInDown"
         data-wow-duration="0.75s"
@@ -49,12 +33,12 @@ function App() {
           <div className="row">
             <div className="col-12">
               <nav className="main-nav">
-                {/* *** Logo Start *** */}
+                {/* ***** Logo Start ***** */}
                 <a href="index.html" className="logo">
                   <img src="assets/images/logo.png" alt="Chain App Dev" />
                 </a>
-                {/* *** Logo End *** */}
-                {/* *** Menu Start *** */}
+                {/* ***** Logo End ***** */}
+                {/* ***** Menu Start ***** */}
                 <ul className="nav">
                   <li className="scroll-to-section">
                     <a href="#top" className="active">
@@ -76,13 +60,9 @@ function App() {
                   <li>
                     <div className="gradient-button">
                       <a
-                        href="#"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setModalView("social");
-                          setModalOpen(true);
-                        }}
-                        className="open-modal"
+                        id="modal_trigger"
+                        href="#modal"
+                        onClick={handleToggleModal}
                       >
                         <i className="fa fa-sign-in-alt" /> Sign In Now
                       </a>
@@ -92,186 +72,140 @@ function App() {
                 <a className="menu-trigger">
                   <span>Menu</span>
                 </a>
-                {/* *** Menu End *** */}
+                {/* ***** Menu End ***** */}
               </nav>
             </div>
           </div>
         </div>
       </header>
-      {/* *** Header Area End *** */}
-      {modalOpen && (
-        <div
-          className="modal-overlay"
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-          }}
-          onClick={() => setModalOpen(false)}
-        >
-          <div
-            id="modal"
-            className="popupContainer"
-            style={{ display: "block" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="popupHeader">
-              <span className="header_title">
-                {modalView === "register"
-                  ? "REGISTER"
-                  : modalView === "login"
-                  ? "LOGIN"
-                  : "LOGIN"}
-              </span>
-              <span
-                className="modal_close"
-                style={{ cursor: "pointer" }}
-                onClick={() => setModalOpen(false)}
-              >
-                <i className="fa fa-times" />
-              </span>
+      {/* ***** Header Area End ***** */}
+
+      <div
+        id="modal"
+        className="popupContainer"
+        style={
+          toggleModal
+            ? {
+                display: "block",
+                position: "fixed",
+                opacity: 1,
+                zIndex: 11000,
+                left: "50%",
+                marginLeft: "-165px",
+                top: 100,
+              }
+            : {
+                display: "none",
+              }
+        }
+      >
+        <div className="popupHeader">
+          <span className="header_title">Login</span>
+          <span className="modal_close" onClick={handleToggleModal}>
+            <i className="fa fa-times" />
+          </span>
+        </div>
+
+        <section className="popupBody">
+          {/* Social Login */}
+          <div className="social_login">
+            <div className="">
+              <a href="#" className="social_box fb">
+                <span className="icon">
+                  <i className="fab fa-facebook" />
+                </span>
+                <span className="icon_title">Connect with Facebook</span>
+              </a>
+              <a href="#" className="social_box google">
+                <span className="icon">
+                  <i className="fab fa-google-plus" />
+                </span>
+                <span className="icon_title">Connect with Google</span>
+              </a>
             </div>
-            <section className="popupBody">
-              {/* Social Login */}
-              {modalView === "social" && (
-                <div className="social_login">
-                  <div className="">
-                    <a href="#" className="social_box fb">
-                      <span className="icon">
-                        <i className="fab fa-facebook" />
-                      </span>
-                      <span className="icon_title">Connect with Facebook</span>
-                    </a>
-                    <a href="#" className="social_box google">
-                      <span className="icon">
-                        <i className="fab fa-google-plus" />
-                      </span>
-                      <span className="icon_title">Connect with Google</span>
-                    </a>
-                  </div>
-                  <div className="centeredText">
-                    <span>Or use your Email address</span>
-                  </div>
-                  <div className="action_btns">
-                    <div className="one_half">
-                      <a
-                        href="#"
-                        id="login_form"
-                        className="btn"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setModalView("login");
-                        }}
-                      >
-                        Login
-                      </a>
-                    </div>
-                    <div className="one_half last">
-                      <a
-                        href="#"
-                        id="register_form"
-                        className="btn"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setModalView("register");
-                        }}
-                      >
-                        Sign up
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Username & Password Login form */}
-              {modalView === "login" && (
-                <div className="user_login" style={{ display: "block" }}>
-                  <form>
-                    <label>Email / Username</label>
-                    <input type="text" />
-                    <br />
-                    <label>Password</label>
-                    <input type="password" />
-                    <br />
-                    <div className="checkbox">
-                      <input id="remember" type="checkbox" />
-                      <label htmlFor="remember">
-                        Remember me on this computer
-                      </label>
-                    </div>
-                    <div className="action_btns">
-                      <div className="one_half">
-                        <a
-                          href="#"
-                          className="btn back_btn"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setModalView("social");
-                          }}
-                        >
-                          <i className="fa fa-angle-double-left" /> Back
-                        </a>
-                      </div>
-                      <div className="one_half last">
-                        <a href="#" className="btn btn_red">
-                          Login
-                        </a>
-                      </div>
-                    </div>
-                  </form>
-                  <a href="#" className="forgot_password">
-                    Forgot password?
+            <div className="centeredText">
+              <span>Or use your Email address</span>
+            </div>
+            <div className="action_btns">
+              <div className="one_half">
+                <a href="#" id="login_form" className="btn">
+                  Login
+                </a>
+              </div>
+              <div className="one_half last">
+                <a href="#" id="register_form" className="btn">
+                  Sign up
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Username & Password Login form */}
+          <div className="user_login">
+            <form>
+              <label>Email / Username</label>
+              <input type="text" />
+              <br />
+              <label>Password</label>
+              <input type="password" />
+              <br />
+              <div className="checkbox">
+                <input id="remember" type="checkbox" />
+                <label htmlFor="remember">Remember me on this computer</label>
+              </div>
+              <div className="action_btns">
+                <div className="one_half">
+                  <a href="#" className="btn back_btn">
+                    <i className="fa fa-angle-double-left" /> Back
                   </a>
                 </div>
-              )}
-              {/* Register Form */}
-              {modalView === "register" && (
-                <div className="user_register" style={{ display: "block" }}>
-                  <form>
-                    <label>Full Name</label>
-                    <input type="text" />
-                    <br />
-                    <label>Email / Username</label>
-                    <input type="text" />
-                    <br />
-                    <label>Password</label>
-                    <input type="password" />
-                    <br />
-                    <div className="checkbox">
-                      <input id="send_updates" type="checkbox" />
-                      <label htmlFor="send_updates">
-                        Send me occasional email updates
-                      </label>
-                    </div>
-                    <div className="action_btns">
-                      <div className="one_half">
-                        <a
-                          href="#"
-                          className="btn back_btn"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setModalView("social");
-                          }}
-                        >
-                          <i className="fa fa-angle-double-left" /> Back
-                        </a>
-                      </div>
-                      <div className="one_half last">
-                        <a href="#" className="btn btn_red">
-                          Register
-                        </a>
-                      </div>
-                    </div>
-                  </form>
+                <div className="one_half last">
+                  <a href="#" className="btn btn_red">
+                    Login
+                  </a>
                 </div>
-              )}
-            </section>
+              </div>
+            </form>
+            <a href="#" className="forgot_password">
+              Forgot password?
+            </a>
           </div>
-        </div>
-      )}
+
+          {/* Register Form */}
+          <div className="user_register">
+            <form>
+              <label>Full Name</label>
+              <input type="text" />
+              <br />
+              <label>Email Address</label>
+              <input type="email" />
+              <br />
+              <label>Password</label>
+              <input type="password" />
+              <br />
+              <div className="checkbox">
+                <input id="send_updates" type="checkbox" />
+                <label htmlFor="send_updates">
+                  Send me occasional email updates
+                </label>
+              </div>
+              <div className="action_btns">
+                <div className="one_half">
+                  <a href="#" className="btn back_btn">
+                    <i className="fa fa-angle-double-left" /> Back
+                  </a>
+                </div>
+                <div className="one_half last">
+                  <a href="#" className="btn btn_red">
+                    Register
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+
       <div
         className="main-banner wow fadeIn"
         id="top"
@@ -327,6 +261,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <div id="services" className="services section">
         <div className="container">
           <div className="row">
@@ -433,6 +368,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <div id="about" className="about-us section">
         <div className="container">
           <div className="row">
@@ -501,6 +437,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <div id="clients" className="the-clients">
         <div className="container">
           <div className="row">
@@ -803,6 +740,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <div id="pricing" className="pricing-tables">
         <div className="container">
           <div className="row">
@@ -881,6 +819,7 @@ function App() {
           </div>
         </div>
       </div>
+
       <footer id="newsletter">
         <div className="container">
           <div className="row">
@@ -1027,7 +966,14 @@ function App() {
           </div>
         </div>
       </footer>
-      {/* Scripts */}
+      <div
+        id="lean_overlay"
+        style={
+          toggleModal
+            ? { display: "block", opacity: "0.6" }
+            : { display: "none" }
+        }
+      />
     </>
   );
 }

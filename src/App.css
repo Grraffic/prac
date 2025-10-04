@@ -1,13 +1,13 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 .logo {
   height: 6em;
-  padding: 1.5em;
+  padding: 0;
   will-change: filter;
   transition: filter 300ms;
 }
@@ -39,4 +39,54 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.popupContainer input[type="text"],
+.popupContainer input[type="email"],
+.popupContainer input[type="password"],
+.popupContainer textarea,
+.popupContainer select {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border: 1px solid #ddd !important;
+  outline: none !important;
+}
+
+.popupContainer input::placeholder,
+.popupContainer textarea::placeholder {
+  color: #999999 !important;
+  opacity: 1 !important;
+}
+
+.popupContainer label {
+  color: #666666 !important;
+}
+
+.popupContainer input[type="checkbox"],
+.popupContainer .user_login input[type="checkbox"],
+.popupContainer .user_register input[type="checkbox"] {
+  -webkit-appearance: checkbox !important;
+  -moz-appearance: checkbox !important;
+  appearance: checkbox !important;
+
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: 1px solid #ddd !important;
+  box-shadow: none !important;
+  background-clip: padding-box !important;
+
+  width: 18px !important;
+  height: 18px !important;
+  vertical-align: middle !important;
+
+  accent-color: #4b8ef1 !important;
+}
+
+.popupContainer input[type="checkbox"] + label {
+  margin-left: 8px;
+  color: #666666 !important;
+}
+
+#lean_overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
 }
